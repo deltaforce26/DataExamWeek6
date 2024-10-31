@@ -54,6 +54,7 @@ class UpdateMissionResult(Mutation):
     success = Boolean()
     mission = Field(MissionType)
 
+
     @staticmethod
     def mutate(info, mission_id, mission_input):
         with session_maker() as session:

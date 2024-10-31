@@ -1,7 +1,7 @@
 from graphene import ObjectType, Field, Int, List, Date, String
 from sqlalchemy import and_
 from app.db.database import session_maker
-from app.db.models import Mission, Target, City, Country
+from app.db.models import Mission, Target, City, Country, TargetType
 from app.gql.types.mission_type import MissionType
 
 
@@ -11,7 +11,7 @@ class Query(ObjectType):
     missions_by_date_range = List(MissionType, start_date=Date(), end_date=Date())
     missions_by_target_industry = List(MissionType, target_industry=String())
     mission_by_country = List(MissionType, country=String())
-
+    mission_by_target_type = List(MissionType, target_type=String())
 
     @staticmethod
     def resolve_mission_by_id(root, info, mission_id):
@@ -52,4 +52,14 @@ class Query(ObjectType):
                     .join(City, City.city_id == Target.city_id)
                     .join(Country, Country.country_id == City.country_id)
                     .filter(Country.country_name == country)
+                    .all())
+
+    @staticmethod
+    def resolve_mission_by_target_type(root, info, target_type):
+        with session_maker() as session:
+            return (session
+                    .query(Mission)
+                    .join(Target, Target.mission_id == Mission.mission_id)
+                    .join(TargetType, TargetType.target_type_id == Target.target_type_id)
+                    .filter(TargetType.target_type_name == target_type)
                     .all())

@@ -1,12 +1,15 @@
 from flask import Flask
 from flask_graphql import GraphQLView
 from graphene import Schema
+from app.gql.query import Query
 from app.tests.test_connection import test_connection
 
 
 app = Flask(__name__)
 
+
 schema = Schema(query=Query)
+
 
 app.add_url_rule(
     '/graphql',
@@ -23,4 +26,4 @@ with app.app_context():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

@@ -1,5 +1,8 @@
 from graphene import ObjectType, Int, Date, Float, List
-from app.gql.types.target_type_graphql import  TargetTypeGraphQL
+from app.db.database import session_maker
+from app.db.models import Target
+from app.gql.types.target_graphql import TargetGraphQL
+
 
 
 class MissionType(ObjectType):
@@ -13,5 +16,12 @@ class MissionType(ObjectType):
     aircraft_damaged = Float()
     aircraft_lost = Float()
 
-    targets = List(TargetTypeGraphQL)
+    targets = List(TargetGraphQL)
+
+
+
+    @staticmethod
+    def resolve_targets(root, info):
+        with session_maker() as session:
+            return session.query(Target).filter(Target.mission_id == root.mission_id).all()
 

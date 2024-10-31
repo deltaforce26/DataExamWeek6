@@ -1,21 +1,25 @@
 from flask import Flask
-
-from app.db.database import session_maker
-from app.db.models import City
+from flask_graphql import GraphQLView
+from graphene import Schema
 from app.tests.test_connection import test_connection
 
 
 app = Flask(__name__)
 
+schema = Schema(query=Query)
 
-def get_cities():
-    with session_maker() as session:
-        cities = session.query(City).all()
-        print(cities)
+app.add_url_rule(
+    '/graphql',
+    view_func=GraphQLView.as_view(
+        'graphql',
+        schema=schema,
+        graphiql=True,
+    )
+)
 
 with app.app_context():
     test_connection()
-    get_cities()
+
 
 
 if __name__ == '__main__':

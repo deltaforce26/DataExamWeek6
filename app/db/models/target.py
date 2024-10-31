@@ -17,4 +17,6 @@ class Target(Base):
     city = relationship('City', back_populates='targets')
     city_id = Column(Integer, ForeignKey('cities.city_id'))
 
-    target_type_id = Column(Integer, ForeignKey('target_types.target_type_id'))
+    # target target_type relationship
+    target_type = relationship('TargetType', back_populates='targets')
+    target_type_id = Column(Integer, ForeignKey('targettypes.target_type_id'))

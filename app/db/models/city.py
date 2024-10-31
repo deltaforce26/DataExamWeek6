@@ -12,7 +12,7 @@ class City(Base):
     longitude = Column(Float)
 
     country = relationship('Country', back_populates='cities')
-    country_id = Column(Integer, ForeignKey('country.country_id'))
+    country_id = Column(Integer, ForeignKey('countries.country_id'))
 
     targets = relationship('Target', back_populates='city')
 

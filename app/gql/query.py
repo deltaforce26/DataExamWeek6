@@ -5,6 +5,7 @@ from app.db.models import Mission, Target
 from app.gql.types.mission_type import MissionType
 
 
+
 class Query(ObjectType):
     mission_by_id = Field(MissionType, mission_id=Int())
     missions_by_date_range = List(MissionType, start_date=Date(), end_date=Date())

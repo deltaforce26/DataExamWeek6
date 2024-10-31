@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_graphql import GraphQLView
 from graphene import Schema
+from app.gql.mutation import Mutation
 from app.gql.query import Query
 from app.tests.test_connection import test_connection
 
@@ -8,7 +9,7 @@ from app.tests.test_connection import test_connection
 app = Flask(__name__)
 
 
-schema = Schema(query=Query)
+schema = Schema(query=Query, mutation=Mutation)
 
 
 app.add_url_rule(
